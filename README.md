@@ -66,6 +66,15 @@ Configuration is via environment variables:
 
 All routes are prefixed with `/api/v1`.
 
+### `GET /`
+Index/discovery page. Returns the API name and a link for every currently
+loaded entity type, so clients can explore the API without prior knowledge
+of its data.
+
+```sh
+curl localhost:8080/
+```
+
 ### `GET /api/v1/types`
 List every discovered entity type and its record count.
 

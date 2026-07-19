@@ -26,6 +26,35 @@ type typesEnvelope struct {
 	Results []store.TypeInfo `json:"results"`
 }
 
+// indexResponse is the response body for GET /, a discovery document
+// describing the API and linking to every currently loaded entity type.
+type indexResponse struct {
+	Name        string            `json:"name"`
+	Description string            `json:"description"`
+	Types       map[string]string `json:"types"`
+	TypesURL    string            `json:"typesUrl"`
+}
+
+// Index handles GET /, returning a small discovery document that
+// describes the API and links to each currently loaded entity type, so
+// clients can explore the API without prior knowledge of its data.
+func (h *Handlers) Index(w http.ResponseWriter, r *http.Request) {
+	base := baseURL(r)
+
+	types := h.Store.Types()
+	links := make(map[string]string, len(types))
+	for _, t := range types {
+		links[t.Name] = base + "/api/v1/" + t.Name
+	}
+
+	writeJSON(w, http.StatusOK, indexResponse{
+		Name:        "gomock",
+		Description: "A generic, abstract mock-entity API. Each entry under \"types\" is a browsable REST resource.",
+		Types:       links,
+		TypesURL:    base + "/api/v1/types",
+	})
+}
+
 // ListTypes handles GET /api/v1/types, listing every discovered entity
 // type and how many records it currently holds.
 func (h *Handlers) ListTypes(w http.ResponseWriter, r *http.Request) {

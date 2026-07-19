@@ -93,10 +93,22 @@ func buildPageURL(r *http.Request, limit, offset int) string {
 	u := *r.URL
 	u.RawQuery = q.Encode()
 	u.Host = r.Host
-	u.Scheme = "http"
-	if r.TLS != nil {
-		u.Scheme = "https"
-	}
+	u.Scheme = requestScheme(r)
 
 	return u.String()
+}
+
+// requestScheme reports the scheme ('http' or 'https') the incoming
+// request was made with.
+func requestScheme(r *http.Request) string {
+	if r.TLS != nil {
+		return "https"
+	}
+	return "http"
+}
+
+// baseURL returns the scheme + host portion of the current request, with
+// no trailing slash, suitable for building absolute links to other routes.
+func baseURL(r *http.Request) string {
+	return requestScheme(r) + "://" + r.Host
 }

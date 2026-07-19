@@ -7,6 +7,7 @@ import "net/http"
 func NewRouter(h *Handlers) http.Handler {
 	mux := http.NewServeMux()
 
+	mux.HandleFunc("GET /{$}", h.Index)
 	mux.HandleFunc("GET /api/v1/types", h.ListTypes)
 	mux.HandleFunc("GET /api/v1/{type}", h.ListEntities)
 	mux.HandleFunc("GET /api/v1/{type}/{idOrSlug}", h.GetEntity)
