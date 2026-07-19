@@ -1,0 +1,18 @@
+# Binaries
+/gomock
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binaries and coverage
+*.test
+*.out
+
+# Go build/vendor artifacts
+/bin/
+/dist/
+
+# OS files
+.DS_Store
