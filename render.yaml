@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: gomock
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/types
+    envVars:
+      - key: DATA_DIR
+        value: ./data

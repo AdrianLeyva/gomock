@@ -133,6 +133,24 @@ over `/app/data`:
 docker run -p 8080:8080 -v "$(pwd)/mydata:/app/data" gomock
 ```
 
+## Deploying to Render (free tier)
+
+A [render.yaml](render.yaml) Blueprint is included so the service definition
+lives in source control:
+
+1. Push this repo to GitHub (already done if you're reading this from there).
+2. In the [Render dashboard](https://dashboard.render.com/), choose
+   **New > Blueprint** and connect this repository. Render will detect
+   `render.yaml` and provision a free `docker` web service automatically.
+3. Render injects its own `PORT` environment variable at runtime (overriding
+   the Dockerfile default), so no extra configuration is needed.
+
+Alternatively, without the Blueprint: **New > Web Service** > connect the
+repo > Environment: `Docker` > Instance Type: `Free`.
+
+Note: Render's free tier spins the service down after a period of
+inactivity, so the first request after idling will be slow (cold start).
+
 ## Notes
 
 - No authentication is enforced on the admin override endpoint — this project
