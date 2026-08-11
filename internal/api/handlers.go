@@ -35,10 +35,28 @@ type indexResponse struct {
 	TypesURL    string            `json:"typesUrl"`
 }
 
-// Index handles GET /, returning a small discovery document that
-// describes the API and links to each currently loaded entity type, so
-// clients can explore the API without prior knowledge of its data.
+// Index handles GET /, serving whichever representation the client asked
+// for: the interactive HTML console to browsers, and the JSON discovery
+// document to everybody else, so `curl /` behaves exactly as it always has.
+// ?format=json forces JSON, which is how you read the discovery document in
+// a browser; /console is the mirror-image escape hatch.
 func (h *Handlers) Index(w http.ResponseWriter, r *http.Request) {
+	// Two representations at one URL: caches and proxies must key on Accept
+	// or they will eventually hand the HTML page to an API client.
+	w.Header().Set("Vary", "Accept")
+
+	if r.URL.Query().Get("format") != "json" && prefersHTML(r.Header.Get("Accept")) {
+		h.serveConsole(w, r)
+		return
+	}
+
+	h.indexJSON(w, r)
+}
+
+// indexJSON writes the discovery document that describes the API and links
+// to each currently loaded entity type, so clients can explore the API
+// without prior knowledge of its data.
+func (h *Handlers) indexJSON(w http.ResponseWriter, r *http.Request) {
 	base := baseURL(r)
 
 	types := h.Store.Types()

@@ -62,18 +62,44 @@ Configuration is via environment variables:
 | `PORT`    | `8080`    | TCP port the HTTP server listens on       |
 | `DATA_DIR`| `./data`  | Directory scanned for `*.json` type files |
 
+## Web console
+
+Open <http://localhost:8080/> in a browser and you get an interactive console
+instead of raw JSON. It discovers your entity types from the live API, so it
+works with whatever data you dropped in `DATA_DIR` — no configuration.
+
+Pick a type, set `limit`/`offset`, add filters (the key box suggests the exact
+attribute spellings found on your records), and hit **Send request**. The
+response panel shows the status, timing, body size and pretty-printed JSON;
+`Prev`/`Next` follow the pagination links, and clicking a result row fetches
+that single entity. There is also **Copy as curl** for taking a request you
+built to the terminal.
+
+The console is compiled into the binary, loads nothing from the network, and
+adds no dependencies — the whole page is one embedded HTML file.
+
 ## API reference
 
 All routes are prefixed with `/api/v1`.
 
 ### `GET /`
-Index/discovery page. Returns the API name and a link for every currently
-loaded entity type, so clients can explore the API without prior knowledge
-of its data.
+Content-negotiated. Clients whose `Accept` header explicitly prefers
+`text/html` — i.e. browsers — get the [web console](#web-console). Everybody
+else, including `curl` and any client sending `Accept: */*`, gets the JSON
+discovery document: the API name plus a link for every currently loaded entity
+type, so clients can explore the API without prior knowledge of its data.
 
 ```sh
-curl localhost:8080/
+curl localhost:8080/                          # JSON discovery document
+curl -H 'Accept: text/html' localhost:8080/   # HTML console
 ```
+
+`?format=json` forces JSON, which is how you read the discovery document from
+a browser.
+
+### `GET /console`
+The web console, served unconditionally regardless of `Accept`. Useful as a
+stable link to share.
 
 ### `GET /api/v1/types`
 List every discovered entity type and its record count.
@@ -91,6 +117,15 @@ Query parameters:
 - any other query parameter is treated as an equality filter against a core
   field (`name`, `slug`) or an `attributes` field, e.g. `?affiliation=Avengers`
 
+Filter semantics worth knowing:
+- Attribute keys are **case-sensitive** (`realName`, not `realname`); only
+  `name` and `slug` are matched case-insensitively.
+- Values are compared case-insensitively but must match exactly — there is no
+  partial match, no full-text search, and no sorting.
+- An unrecognised key returns **zero results**, not an error.
+- Array-valued attributes (e.g. `powers`) are stringified as
+  `[flight telekinesis]`, so they are effectively unfilterable.
+
 ```sh
 curl "localhost:8080/api/v1/characters?limit=2&offset=0"
 curl "localhost:8080/api/v1/characters?affiliation=Avengers"
@@ -106,6 +141,9 @@ Response shape:
   "results": [ { "id": 1, "name": "Iron Man", "slug": "iron-man", "attributes": { } } ]
 }
 ```
+
+`next` and `previous` are absolute URLs. They honour `X-Forwarded-Proto`, so
+they come back as `https://` behind a TLS-terminating proxy such as Render's.
 
 ### `GET /api/v1/{type}/{idOrSlug}`
 Fetch a single entity by numeric ID or by slug.
@@ -164,5 +202,7 @@ inactivity, so the first request after idling will be slow (cold start).
 
 - No authentication is enforced on the admin override endpoint — this project
   is intended for local/dev mock use. Add middleware in front of it if you
-  expose it beyond that.
-- No automated test suite is included in this initial version.
+  expose it beyond that. For the same reason the web console documents that
+  endpoint but deliberately provides no button that calls it.
+- The project has no third-party dependencies; `go.mod` lists none and there
+  is no `go.sum`. The console is plain embedded HTML for the same reason.

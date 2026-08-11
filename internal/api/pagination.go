@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"gomock/internal/entity"
 )
@@ -99,8 +100,30 @@ func buildPageURL(r *http.Request, limit, offset int) string {
 }
 
 // requestScheme reports the scheme ('http' or 'https') the incoming
-// request was made with.
+// request was made with, honouring the X-Forwarded-Proto header set by a
+// TLS-terminating proxy. Without this, every generated link (next/previous
+// and the discovery document's URLs) comes back as http:// on any hosted
+// deployment, because the connection reaching this process is plain HTTP.
+//
+// The header is trusted unconditionally. A client talking to this server
+// directly can therefore spoof the scheme, but the only consequence is a
+// wrong scheme in a link string in a read-only mock API's response body —
+// not worth a trusted-proxy configuration knob.
 func requestScheme(r *http.Request) string {
+	if proto := r.Header.Get("X-Forwarded-Proto"); proto != "" {
+		// A chain of proxies appends to the header; the first entry is the
+		// one the original client used.
+		if i := strings.IndexByte(proto, ','); i >= 0 {
+			proto = proto[:i]
+		}
+		switch strings.ToLower(strings.TrimSpace(proto)) {
+		case "https":
+			return "https"
+		case "http":
+			return "http"
+		}
+	}
+
 	if r.TLS != nil {
 		return "https"
 	}
