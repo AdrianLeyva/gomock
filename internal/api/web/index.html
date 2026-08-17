@@ -211,7 +211,6 @@
 
   .ref { display: grid; gap: 12px; }
   .ref article { border: 1px solid var(--border); border-radius: 8px; padding: 14px; background: var(--panel-alt); }
-  .ref article.danger { border-color: var(--warn); background: var(--warn-bg); }
   .ref .route { font-family: var(--mono); font-size: 14px; font-weight: 700; margin: 0 0 6px; }
   .ref p { margin: 0 0 8px; font-size: 14px; }
   .ref pre { font-family: var(--mono); font-size: 12.5px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px; overflow-x: auto; margin: 0; }
@@ -363,17 +362,6 @@ curl localhost:8080/?format=json  # JSON, from a browser</pre>
         <p class="route">GET /api/v1/{type}/{idOrSlug}</p>
         <p>A single entity by numeric id or by slug.</p>
         <pre>curl localhost:8080/api/v1/characters/iron-man</pre>
-      </article>
-
-      <article class="danger">
-        <p class="route">PUT /api/v1/admin/{type}</p>
-        <p>Replaces a type's entire dataset in memory, creating the type if it does not exist.
-           <strong>Deliberately not wired to a button on this page:</strong> the endpoint is
-           unauthenticated, so a control here would let any visitor wipe the live dataset. Changes are
-           in-memory only and revert on restart.</p>
-        <pre>curl -X PUT localhost:8080/api/v1/admin/items \
-  -H 'Content-Type: application/json' \
-  -d '[{"id":1,"name":"Elixir","potency":"high"}]'</pre>
       </article>
     </div>
   </section>
@@ -742,8 +730,8 @@ curl localhost:8080/?format=json  # JSON, from a browser</pre>
   }
 
   // entityCell builds a keyboard-focusable cell that fetches the single
-  // entity. Values go in via textContent — the store accepts arbitrary JSON
-  // from an unauthenticated PUT, so record data is untrusted input.
+  // entity. Values go in via textContent — record data is arbitrary JSON and
+  // must never be treated as markup.
   function entityCell(item, value, className) {
     var td = document.createElement('td');
     if (className) { td.className = className; }

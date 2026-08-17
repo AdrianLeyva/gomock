@@ -1,12 +1,8 @@
 package api
 
 import (
-	"encoding/json"
 	"net/http"
-	"strconv"
-	"strings"
 
-	"gomock/internal/entity"
 	"gomock/internal/store"
 )
 
@@ -107,33 +103,4 @@ func (h *Handlers) GetEntity(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeJSON(w, http.StatusOK, item)
-}
-
-// ReplaceType handles PUT /api/v1/admin/{type}, replacing typeName's
-// in-memory dataset with the posted JSON array. Not persisted to disk.
-func (h *Handlers) ReplaceType(w http.ResponseWriter, r *http.Request) {
-	typeName := r.PathValue("type")
-	if strings.TrimSpace(typeName) == "" {
-		writeError(w, http.StatusBadRequest, "entity type is required")
-		return
-	}
-
-	var records []map[string]any
-	if err := json.NewDecoder(r.Body).Decode(&records); err != nil {
-		writeError(w, http.StatusBadRequest, "invalid JSON body: expected an array of objects: "+err.Error())
-		return
-	}
-
-	entities := make([]entity.Entity, 0, len(records))
-	for i, record := range records {
-		ent, err := store.AdaptRecord(record)
-		if err != nil {
-			writeError(w, http.StatusBadRequest, "record "+strconv.Itoa(i)+": "+err.Error())
-			return
-		}
-		entities = append(entities, ent)
-	}
-
-	h.Store.Replace(typeName, entities)
-	writeJSON(w, http.StatusOK, store.TypeInfo{Name: typeName, Count: len(entities)})
 }

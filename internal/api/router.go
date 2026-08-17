@@ -12,7 +12,6 @@ func NewRouter(h *Handlers) http.Handler {
 	mux.HandleFunc("GET /api/v1/types", h.ListTypes)
 	mux.HandleFunc("GET /api/v1/{type}", h.ListEntities)
 	mux.HandleFunc("GET /api/v1/{type}/{idOrSlug}", h.GetEntity)
-	mux.HandleFunc("PUT /api/v1/admin/{type}", h.ReplaceType)
 
 	return mux
 }
