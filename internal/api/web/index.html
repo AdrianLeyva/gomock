@@ -4,8 +4,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>gomock — API console</title>
+<title>gomock — instant mock REST API from plain JSON</title>
+<meta name="description" content="gomock turns plain JSON files into a real REST API — paginated, filterable, slug-addressable endpoints with no code and no database. A tiny, self-hosted mock API for developers.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0c0f" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="gomock">
+<meta property="og:title" content="gomock — instant mock REST API from plain JSON">
+<meta property="og:description" content="Turn plain JSON files into a real REST API — paginated, filterable endpoints with no code and no database.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="gomock — instant mock REST API from plain JSON">
+<meta name="twitter:description" content="Turn plain JSON files into a real REST API — paginated, filterable endpoints with no code and no database.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "gomock",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "gomock turns plain JSON files into a real REST API — paginated, filterable, slug-addressable endpoints with no code and no database."
+}
+</script>
 <style>
   :root {
     --bg: #ffffff;
@@ -75,6 +97,7 @@
     letter-spacing: -0.01em;
   }
   header.top h1::before { content: "\26A1"; margin-right: 8px; opacity: 0.8; }
+  header.top p { margin: 12px 0 0; color: var(--muted); font-size: 15px; max-width: 60ch; }
 
   /* Sections are open — separated by whitespace and a hairline, not boxes. */
   section.card { padding: 0; margin: 0 0 48px; }
@@ -303,6 +326,7 @@
 
   <header class="top">
     <h1>gomock</h1>
+    <p>Turn plain JSON into a real REST API — paginated, filterable endpoints, no code and no database.</p>
   </header>
 
   <section class="card">

@@ -36,6 +36,9 @@ func (h *Handlers) serveConsole(w http.ResponseWriter, r *http.Request) {
 	// Revalidate every visit so a redeploy is picked up immediately.
 	w.Header().Set("Cache-Control", "no-cache")
 	w.Header().Set("ETag", consoleETag)
+	// Declare the canonical URL via header (the page is reachable at both /
+	// and /console) so it works on any origin without templating the HTML.
+	w.Header().Set("Link", "<"+baseURL(r)+"/>; rel=\"canonical\"")
 
 	if r.Header.Get("If-None-Match") == consoleETag {
 		w.WriteHeader(http.StatusNotModified)

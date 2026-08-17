@@ -4,6 +4,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"gomock/internal/api"
 	"gomock/internal/config"
@@ -20,11 +21,23 @@ func main() {
 
 	s := store.New(initial)
 	handlers := api.NewHandlers(s)
-	router := api.NewRouter(handlers)
+	limiter := api.NewRateLimiter(cfg.RateLimitRPS, cfg.RateLimitBurst)
+	router := api.NewRouter(handlers, limiter)
 
-	addr := ":" + cfg.Port
-	log.Printf("gomock API listening on %s (data dir: %s)", addr, cfg.DataDir)
-	if err := http.ListenAndServe(addr, router); err != nil {
+	// Explicit timeouts and header cap bound slow-client (Slowloris) and
+	// oversized-header attacks that the default ListenAndServe leaves open.
+	srv := &http.Server{
+		Addr:              ":" + cfg.Port,
+		Handler:           router,
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       15 * time.Second,
+		WriteTimeout:      30 * time.Second,
+		IdleTimeout:       60 * time.Second,
+		MaxHeaderBytes:    1 << 20,
+	}
+
+	log.Printf("gomock API listening on %s (data dir: %s)", srv.Addr, cfg.DataDir)
+	if err := srv.ListenAndServe(); err != nil {
 		log.Fatalf("server error: %v", err)
 	}
 }
