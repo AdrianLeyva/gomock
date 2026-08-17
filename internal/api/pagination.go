@@ -13,7 +13,8 @@ const (
 	maxLimit     = 100
 )
 
-// listEnvelope is the PokeAPI-style paginated response wrapper.
+// listEnvelope is the paginated list response wrapper
+// ({count, next, previous, results}).
 type listEnvelope struct {
 	Count    int             `json:"count"`
 	Next     *string         `json:"next"`
