@@ -1,16 +1,5 @@
 <!doctype html>
-<!--
-  gomock interactive API console.
-
-  Served by the Go binary at GET / (to browsers) and GET /console. Every
-  request it makes is a same-origin relative path, so there is no CORS
-  configuration on the server and, as a consequence, opening this file
-  directly from disk over file:// will not work — reach it through the
-  running server.
-
-  No external resources of any kind: all CSS and JS is inline, so the page
-  works offline, has no supply-chain surface, and needs no build step.
--->
+<!-- gomock interactive API console. Served by the Go binary at GET / and GET /console; all CSS/JS inline. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -80,19 +69,7 @@
   .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 20px 80px; }
 
   header.top { margin-bottom: 28px; }
-  header.top h1 { font-size: 30px; margin: 0 0 6px; letter-spacing: -0.02em; }
-  header.top p { margin: 0 0 14px; color: var(--muted); max-width: 62ch; }
-
-  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
-  .pill {
-    font-family: var(--mono);
-    font-size: 12px;
-    padding: 3px 9px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: var(--panel);
-    color: var(--muted);
-  }
+  header.top h1 { font-size: 30px; margin: 0; letter-spacing: -0.02em; }
 
   section.card {
     background: var(--panel);
@@ -150,17 +127,7 @@
   .filter-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; margin-bottom: 8px; }
   .filter-row button { padding: 7px 11px; }
 
-  .note {
-    margin-top: 14px;
-    padding: 12px 14px;
-    border-left: 3px solid var(--warn);
-    background: var(--warn-bg);
-    border-radius: 0 7px 7px 0;
-    font-size: 13px;
-  }
-  .note ul { margin: 6px 0 0; padding-left: 18px; }
-  .note li { margin-bottom: 3px; }
-  .note code, .ref code, .hint code { font-family: var(--mono); font-size: 0.92em; }
+  .ref code, .hint code { font-family: var(--mono); font-size: 0.92em; }
 
   .banner {
     padding: 12px 14px;
@@ -269,12 +236,6 @@
 
   <header class="top">
     <h1>gomock</h1>
-    <p>A generic mock-entity REST API. Everything below runs against this server for real —
-       pick a type, shape a request, and inspect the response.</p>
-    <div class="pills">
-      <span class="pill" id="pill-origin">&hellip;</span>
-      <span class="pill" id="pill-types">loading types&hellip;</span>
-    </div>
   </header>
 
   <section class="card">
@@ -302,19 +263,16 @@
         <div class="list-only">
           <label for="limit">limit</label>
           <input type="number" id="limit" value="20" min="1" max="100">
-          <div class="hint">server clamps to 1&ndash;100</div>
         </div>
 
         <div class="list-only">
           <label for="offset">offset</label>
           <input type="number" id="offset" value="0" min="0">
-          <div class="hint">records to skip</div>
         </div>
 
         <div class="detail-only hidden">
           <label for="idOrSlug">id or slug</label>
-          <input type="text" id="idOrSlug" placeholder="1 or iron-man" autocomplete="off">
-          <div class="hint">numeric id first, then case-insensitive slug</div>
+          <input type="text" id="idOrSlug" placeholder="1 or a-slug" autocomplete="off">
         </div>
       </div>
 
@@ -323,20 +281,6 @@
         <div id="filters"></div>
         <datalist id="attr-keys"></datalist>
         <button type="button" id="add-filter">+ Add filter</button>
-
-        <div class="note">
-          <strong>How filtering actually behaves</strong>
-          <ul>
-            <li>Attribute keys are <strong>case-sensitive</strong> (<code>realName</code>, not <code>realname</code>).
-                Only <code>name</code> and <code>slug</code> are matched case-insensitively.</li>
-            <li>Values are compared case-insensitively but must match <strong>exactly</strong> — there is no
-                partial match, no search, and no sorting.</li>
-            <li>An unrecognised key yields <strong>zero results</strong> rather than an error.</li>
-            <li>Array attributes (e.g. <code>powers</code>) are stringified as <code>[flight telekinesis]</code>,
-                so they are effectively unfilterable.</li>
-          </ul>
-          The key box suggests the exact spellings found on this type's records.
-        </div>
       </div>
 
       <label class="sr-only" for="preview">Request URL</label>
@@ -635,16 +579,11 @@ curl localhost:8080/?format=json  # JSON, from a browser</pre>
         });
         select.disabled = state.types.length === 0;
 
-        var total = state.types.reduce(function (sum, t) { return sum + t.count; }, 0);
-        setText(el('pill-types'), state.types.length + ' type' + (state.types.length === 1 ? '' : 's') +
-                                  ' · ' + total + ' records');
-
         if (state.types.length) { refreshAttrKeys(select.value); }
         refreshPreview();
       })
       .catch(function (err) {
         el('type').disabled = true;
-        setText(el('pill-types'), 'types unavailable');
         setText(el('load-error-text'), 'Could not load entity types: ' + err.message +
                                        '. Is the server still running?');
         el('load-error').classList.remove('hidden');
@@ -910,7 +849,6 @@ curl localhost:8080/?format=json  # JSON, from a browser</pre>
 
   // ------------------------------------------------------------------ init
 
-  setText(el('pill-origin'), location.origin);
   addFilterRow();
   refreshPreview();
   loadTypes();

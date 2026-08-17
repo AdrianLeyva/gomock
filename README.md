@@ -3,9 +3,10 @@
 A generic, abstract mock-entity web API written in Go — define your own entity
 types and data, and it exposes them as a fully-featured REST resource. Drop a
 JSON file in the `data/` directory and it instantly gets listing, pagination,
-lookup, and filtering — no code changes required. The bundled sample data
-represents Marvel Studios characters, but the API itself has no idea what a
-"character" is — swap in any dataset you like.
+lookup, and filtering — no code changes required. Three sample datasets ship
+with it — Marvel characters (`characters`), tech products (`tech`), and
+supermarket products (`groceries`) — but the API itself has no idea what any
+of them are, so you can swap in any dataset you like.
 
 ## Concept
 
@@ -65,8 +66,10 @@ Configuration is via environment variables:
 ## Web console
 
 Open <http://localhost:8080/> in a browser and you get an interactive console
-instead of raw JSON. It discovers your entity types from the live API, so it
-works with whatever data you dropped in `DATA_DIR` — no configuration.
+instead of raw JSON. It discovers your entity types from the live API, so the
+type selector lets you switch between whatever data you dropped in `DATA_DIR`
+(the bundled `characters`, `tech`, and `groceries`, or your own) — no
+configuration.
 
 Pick a type, set `limit`/`offset`, add filters (the key box suggests the exact
 attribute spellings found on your records), and hit **Send request**. The

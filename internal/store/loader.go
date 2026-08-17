@@ -11,11 +11,9 @@ import (
 )
 
 // LoadDir scans dir for top-level *.json files. Each file's name (without
-// its extension) becomes an entity type name, and its contents must be a
-// JSON array of flat objects that AdaptRecord can normalize into the
-// generic Entity schema. Any read, parse, or adaptation failure aborts
-// loading with a descriptive error identifying the offending file and, for
-// adaptation errors, the record's index within the array.
+// its extension) becomes an entity type, and its contents must be a JSON
+// array of flat objects that AdaptRecord can normalize. Any failure aborts
+// loading with an error naming the offending file and record index.
 func LoadDir(dir string) (map[string][]entity.Entity, error) {
 	entries, err := os.ReadDir(dir)
 	if err != nil {

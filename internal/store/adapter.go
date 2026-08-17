@@ -13,11 +13,9 @@ import (
 
 var slugInvalidChars = regexp.MustCompile(`[^a-z0-9]+`)
 
-// AdaptRecord converts a raw, user-supplied flat JSON object into the
-// generic Entity envelope. "id" and "name" are required; "slug" is
-// derived from "name" when absent. Every other field is copied verbatim
-// into Attributes, which is what lets callers plug in arbitrary custom
-// schemas without any code changes.
+// AdaptRecord converts a raw flat JSON object into the generic Entity
+// envelope. "id" and "name" are required; "slug" is derived from "name" when
+// absent. Every other field is copied verbatim into Attributes.
 func AdaptRecord(raw map[string]any) (entity.Entity, error) {
 	rawID, ok := raw["id"]
 	if !ok {
