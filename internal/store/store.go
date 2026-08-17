@@ -84,12 +84,3 @@ func (s *Store) Get(typeName, idOrSlug string) (item entity.Entity, found bool, 
 
 	return entity.Entity{}, false, true
 }
-
-// Replace overwrites (or creates) the dataset for typeName with items,
-// in-memory only; a restart reverts to the on-disk baseline.
-func (s *Store) Replace(typeName string, items []entity.Entity) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	s.data[typeName] = items
-}

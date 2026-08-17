@@ -156,18 +156,8 @@ curl localhost:8080/api/v1/characters/1
 curl localhost:8080/api/v1/characters/iron-man
 ```
 
-### `PUT /api/v1/admin/{type}`
-Replace the entire in-memory dataset for a type with a new JSON array (same
-flat-object format as the data files). This also works for a type name that
-doesn't exist yet, effectively creating it at runtime. **Changes made this way
-are not persisted to disk** — restarting the server reverts to the JSON files
-in `DATA_DIR`.
-
-```sh
-curl -X PUT localhost:8080/api/v1/admin/items \
-  -H 'Content-Type: application/json' \
-  -d '[{"id":1,"name":"Elixir","potency":"high"}]'
-```
+The API is read-only: entity data is defined by the JSON files in `DATA_DIR`
+and loaded at startup. To change it, edit those files and restart the server.
 
 ## Docker
 
@@ -203,9 +193,8 @@ inactivity, so the first request after idling will be slow (cold start).
 
 ## Notes
 
-- No authentication is enforced on the admin override endpoint — this project
-  is intended for local/dev mock use. Add middleware in front of it if you
-  expose it beyond that. For the same reason the web console documents that
-  endpoint but deliberately provides no button that calls it.
+- The API is read-only over HTTP; datasets are defined by the JSON files in
+  `DATA_DIR` and loaded at startup, so there is no runtime write surface to
+  secure. This project is intended for local/dev mock use.
 - The project has no third-party dependencies; `go.mod` lists none and there
   is no `go.sum`. The console is plain embedded HTML for the same reason.

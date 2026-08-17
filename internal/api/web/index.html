@@ -4,54 +4,74 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>gomock — API console</title>
+<title>gomock — free mock data API for developers</title>
+<meta name="description" content="gomock is a free mock data API for developers: all the realistic sample data you need to test new tech, in one place, served through a modern REST API. Try new frameworks, libraries, and tools without building a backend.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0c0f" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="gomock">
+<meta property="og:title" content="gomock — free mock data API for developers">
+<meta property="og:description" content="All the realistic mock data you need to try something new, in one place, served through a modern free REST API. No backend required.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="gomock — free mock data API for developers">
+<meta name="twitter:description" content="All the realistic mock data you need to try something new, in one place, served through a modern free REST API. No backend required.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9889;</text></svg>">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "gomock",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "gomock is a free mock data API for developers: realistic sample datasets served through a modern REST API, so you can test new technologies without building a backend."
+}
+</script>
 <style>
   :root {
-    --bg: #f7f8fa;
+    --bg: #ffffff;
     --panel: #ffffff;
-    --panel-alt: #f1f3f7;
-    --border: #dfe3ea;
-    --text: #1b1f27;
-    --muted: #6b7280;
-    --accent: #3b5bdb;
+    --panel-alt: #f6f6f7;
+    --border: #ececee;
+    --text: #18181b;
+    --muted: #8a8a93;
+    --accent: #18181b;
     --accent-text: #ffffff;
-    --ok: #157f3d;
-    --ok-bg: #e6f5ec;
-    --warn: #9a6400;
-    --warn-bg: #fdf3e0;
-    --err: #b42318;
-    --err-bg: #fdecea;
-    --tok-key: #a3306a;
-    --tok-str: #157f3d;
+    --ring: rgba(24, 24, 27, 0.28);
+    --ok: #15803d;
+    --warn: #a16207;
+    --err: #dc2626;
+    --err-bg: #fef2f2;
+    --tok-key: #7c3aed;
+    --tok-str: #15803d;
     --tok-num: #b45309;
-    --tok-bool: #3b5bdb;
-    --tok-null: #6b7280;
+    --tok-bool: #2563eb;
+    --tok-null: #a1a1aa;
     --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
     --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #0f1115;
-      --panel: #171a21;
-      --panel-alt: #1e222b;
-      --border: #2b303b;
-      --text: #e6e8ee;
-      --muted: #939aa8;
-      --accent: #6b8afd;
-      --accent-text: #0f1115;
-      --ok: #56d38a;
-      --ok-bg: #16301f;
-      --warn: #e3b341;
-      --warn-bg: #33280f;
-      --err: #ff8078;
-      --err-bg: #3a1a18;
-      --tok-key: #f191c0;
-      --tok-str: #7ee2a8;
-      --tok-num: #f0b072;
-      --tok-bool: #8ba8ff;
-      --tok-null: #939aa8;
+      --bg: #0c0c0f;
+      --panel: #0c0c0f;
+      --panel-alt: #161619;
+      --border: #262629;
+      --text: #ededf0;
+      --muted: #8b8b95;
+      --accent: #f4f4f5;
+      --accent-text: #0c0c0f;
+      --ring: rgba(244, 244, 245, 0.24);
+      --ok: #4ade80;
+      --warn: #eab308;
+      --err: #f87171;
+      --err-bg: #2a1616;
+      --tok-key: #c4b5fd;
+      --tok-str: #86efac;
+      --tok-num: #fdba74;
+      --tok-bool: #93c5fd;
+      --tok-null: #6b7280;
     }
   }
 
@@ -63,27 +83,37 @@
     color: var(--text);
     font-family: var(--sans);
     font-size: 15px;
-    line-height: 1.5;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
 
-  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 20px 80px; }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 64px 24px 96px; }
 
-  header.top { margin-bottom: 28px; }
-  header.top h1 { font-size: 30px; margin: 0; letter-spacing: -0.02em; }
-
-  section.card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
+  header.top { margin-bottom: 48px; }
+  header.top h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.01em;
   }
+  header.top h1::before { content: "\26A1"; margin-right: 8px; opacity: 0.8; }
+  header.top p { margin: 12px 0 0; color: var(--muted); font-size: 15px; max-width: 60ch; }
 
-  h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin: 0 0 16px; }
+  /* Sections are open — separated by whitespace and a hairline, not boxes. */
+  section.card { padding: 0; margin: 0 0 48px; }
+  section.card + section.card { padding-top: 40px; border-top: 1px solid var(--border); }
+
+  h2 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    color: var(--muted);
+    margin: 0 0 20px;
+  }
   h3 { font-size: 15px; margin: 0 0 8px; }
 
-  label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
-  .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 6px; }
 
   input, select, button {
     font-family: inherit;
@@ -92,50 +122,92 @@
   }
 
   input, select {
-    background: var(--bg);
+    background: var(--panel);
     border: 1px solid var(--border);
-    border-radius: 7px;
-    padding: 7px 10px;
+    border-radius: 8px;
+    padding: 9px 11px;
     width: 100%;
     min-width: 0;
+    transition: border-color 0.12s ease, box-shadow 0.12s ease;
   }
-  input:focus, select:focus, button:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 1px;
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--ring);
+  }
+  button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--ring);
   }
   input:disabled, select:disabled { opacity: 0.5; cursor: not-allowed; }
 
   button {
-    background: var(--panel-alt);
+    background: transparent;
     border: 1px solid var(--border);
-    border-radius: 7px;
-    padding: 7px 13px;
+    border-radius: 8px;
+    padding: 9px 15px;
     cursor: pointer;
+    transition: background 0.12s ease, border-color 0.12s ease, opacity 0.12s ease;
   }
-  button:hover:not(:disabled) { border-color: var(--accent); }
-  button:disabled { opacity: 0.45; cursor: not-allowed; }
-  button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
-  button.link { background: none; border: none; padding: 0; color: var(--accent); text-decoration: underline; }
+  button:hover:not(:disabled) { background: var(--panel-alt); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  button.primary {
+    background: var(--accent);
+    color: var(--accent-text);
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+  button.primary:hover:not(:disabled) { background: var(--accent); opacity: 0.85; }
+  button.link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+  }
+  button.link:hover { background: none; color: var(--text); }
 
-  .controls { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; align-items: start; }
+  .controls { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; align-items: start; }
   @media (max-width: 640px) { .controls { grid-template-columns: 1fr; } }
 
-  .segmented { display: inline-flex; border: 1px solid var(--border); border-radius: 7px; overflow: hidden; margin-bottom: 16px; }
-  .segmented button { border: none; border-radius: 0; background: var(--panel); }
-  .segmented button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); font-weight: 600; }
+  .segmented {
+    display: inline-flex;
+    gap: 2px;
+    background: var(--panel-alt);
+    padding: 3px;
+    border-radius: 9px;
+    margin-bottom: 24px;
+  }
+  .segmented button {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 16px;
+    background: transparent;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .segmented button:hover:not([aria-pressed="true"]) { background: transparent; color: var(--text); }
+  .segmented button[aria-pressed="true"] {
+    background: var(--panel);
+    color: var(--text);
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
 
   .filter-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; margin-bottom: 8px; }
-  .filter-row button { padding: 7px 11px; }
+  .filter-row button { padding: 9px 13px; }
 
   .ref code, .hint code { font-family: var(--mono); font-size: 0.92em; }
 
   .banner {
     padding: 12px 14px;
-    border-radius: 7px;
+    border-radius: 8px;
     background: var(--err-bg);
     color: var(--err);
-    border: 1px solid var(--err);
-    margin-bottom: 16px;
+    border: 1px solid transparent;
+    margin-bottom: 20px;
     display: flex;
     gap: 12px;
     align-items: center;
@@ -147,37 +219,46 @@
     display: block;
     font-family: var(--mono);
     font-size: 13px;
+    color: var(--muted);
     background: var(--panel-alt);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    padding: 11px 13px;
+    border-radius: 8px;
+    padding: 12px 14px;
     overflow-x: auto;
     white-space: pre;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
 
   .actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 
-  .status-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+  .status-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
   .status {
     font-family: var(--mono);
     font-size: 13px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 999px;
+    font-weight: 600;
+    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
   }
-  .status.ok { background: var(--ok-bg); color: var(--ok); }
-  .status.warn { background: var(--warn-bg); color: var(--warn); }
-  .status.err { background: var(--err-bg); color: var(--err); }
+  .status::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: currentColor;
+  }
+  .status.ok { color: var(--ok); }
+  .status.warn { color: var(--warn); }
+  .status.err { color: var(--err); }
   .meta { font-family: var(--mono); font-size: 12px; color: var(--muted); }
 
   pre.body {
     font-family: var(--mono);
     font-size: 13px;
+    line-height: 1.55;
     background: var(--panel-alt);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    padding: 14px;
+    border-radius: 8px;
+    padding: 16px;
     overflow-x: auto;
     max-height: 460px;
     overflow-y: auto;
@@ -189,12 +270,12 @@
   .tok-bool { color: var(--tok-bool); }
   .tok-null { color: var(--tok-null); }
 
-  .pager { display: flex; gap: 10px; align-items: center; margin: 14px 0; flex-wrap: wrap; }
+  .pager { display: flex; gap: 10px; align-items: center; margin: 16px 0; flex-wrap: wrap; }
   .pager .caption { font-size: 13px; color: var(--muted); }
 
-  table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 16px; }
   th, td { text-align: left; padding: 0; border-bottom: 1px solid var(--border); }
-  th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); padding: 6px 10px; }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; color: var(--muted); padding: 8px 12px; }
   td button.row {
     display: block;
     width: 100%;
@@ -202,26 +283,35 @@
     background: none;
     border: none;
     border-radius: 0;
-    padding: 8px 10px;
+    padding: 11px 12px;
     font-size: 14px;
   }
   td button.row:hover { background: var(--panel-alt); }
   td.id { font-family: var(--mono); color: var(--muted); }
   td.slug button.row { font-family: var(--mono); font-size: 13px; color: var(--muted); }
 
-  .ref { display: grid; gap: 12px; }
-  .ref article { border: 1px solid var(--border); border-radius: 8px; padding: 14px; background: var(--panel-alt); }
-  .ref article.danger { border-color: var(--warn); background: var(--warn-bg); }
-  .ref .route { font-family: var(--mono); font-size: 14px; font-weight: 700; margin: 0 0 6px; }
-  .ref p { margin: 0 0 8px; font-size: 14px; }
-  .ref pre { font-family: var(--mono); font-size: 12.5px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 10px; overflow-x: auto; margin: 0; }
-  .ref ul { margin: 0 0 8px; padding-left: 18px; font-size: 14px; }
+  .ref { display: grid; gap: 24px; }
+  .ref article { border: none; background: transparent; padding: 0; }
+  .ref .route { font-family: var(--mono); font-size: 14px; font-weight: 600; margin: 0 0 6px; }
+  .ref p { margin: 0 0 10px; font-size: 14px; color: var(--muted); }
+  .ref pre {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--panel-alt);
+    border-radius: 8px;
+    padding: 12px;
+    overflow-x: auto;
+    margin: 0;
+  }
+  .ref ul { margin: 0 0 10px; padding-left: 18px; font-size: 14px; color: var(--muted); }
+
+  .hint { font-size: 13px; color: var(--muted); }
 
   .site-footer {
     text-align: center;
     font-size: 12px;
     color: var(--muted);
-    padding: 20px 0 0;
+    padding: 40px 0 0;
   }
 
   .hidden { display: none !important; }
@@ -236,6 +326,7 @@
 
   <header class="top">
     <h1>gomock</h1>
+    <p>All the mock data you need to try something new, in one place. Realistic sample datasets served through a modern, free REST API. Practice a new framework, library, or language against real endpoints, without building a backend first.</p>
   </header>
 
   <section class="card">
@@ -363,17 +454,6 @@ curl localhost:8080/?format=json  # JSON, from a browser</pre>
         <p class="route">GET /api/v1/{type}/{idOrSlug}</p>
         <p>A single entity by numeric id or by slug.</p>
         <pre>curl localhost:8080/api/v1/characters/iron-man</pre>
-      </article>
-
-      <article class="danger">
-        <p class="route">PUT /api/v1/admin/{type}</p>
-        <p>Replaces a type's entire dataset in memory, creating the type if it does not exist.
-           <strong>Deliberately not wired to a button on this page:</strong> the endpoint is
-           unauthenticated, so a control here would let any visitor wipe the live dataset. Changes are
-           in-memory only and revert on restart.</p>
-        <pre>curl -X PUT localhost:8080/api/v1/admin/items \
-  -H 'Content-Type: application/json' \
-  -d '[{"id":1,"name":"Elixir","potency":"high"}]'</pre>
       </article>
     </div>
   </section>
@@ -742,8 +822,8 @@ curl localhost:8080/?format=json  # JSON, from a browser</pre>
   }
 
   // entityCell builds a keyboard-focusable cell that fetches the single
-  // entity. Values go in via textContent — the store accepts arbitrary JSON
-  // from an unauthenticated PUT, so record data is untrusted input.
+  // entity. Values go in via textContent — record data is arbitrary JSON and
+  // must never be treated as markup.
   function entityCell(item, value, className) {
     var td = document.createElement('td');
     if (className) { td.className = className; }
