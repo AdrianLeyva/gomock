@@ -56,10 +56,9 @@ func (s *Store) List(typeName string) ([]entity.Entity, bool) {
 }
 
 // Get looks up a single entity within typeName by numeric ID or, failing
-// that, by a case-insensitive exact slug match. The returned booleans are,
-// in order: whether a matching record was found, and whether typeName
-// exists at all (letting handlers distinguish an unknown type from an
-// unknown record within a known type).
+// that, by case-insensitive slug. The booleans report whether a record was
+// found and whether typeName exists at all, letting handlers distinguish an
+// unknown type from an unknown record.
 func (s *Store) Get(typeName, idOrSlug string) (item entity.Entity, found bool, typeExists bool) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
@@ -86,9 +85,8 @@ func (s *Store) Get(typeName, idOrSlug string) (item entity.Entity, found bool, 
 	return entity.Entity{}, false, true
 }
 
-// Replace overwrites (or creates) the dataset for typeName with items.
-// This is in-memory only; it does not persist back to the source JSON
-// file, so a server restart reverts to the on-disk baseline.
+// Replace overwrites (or creates) the dataset for typeName with items,
+// in-memory only; a restart reverts to the on-disk baseline.
 func (s *Store) Replace(typeName string, items []entity.Entity) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
