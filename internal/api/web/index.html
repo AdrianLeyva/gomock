@@ -445,19 +445,6 @@
     <h2>Endpoint reference</h2>
     <div class="ref">
       <article>
-        <p class="route">GET /</p>
-        <p>Content-negotiated. Browsers get this console; every other client gets a JSON discovery
-           document listing each loaded entity type.</p>
-        <pre>curl localhost:8080/            # JSON
-curl localhost:8080/?format=json  # JSON, from a browser</pre>
-      </article>
-
-      <article>
-        <p class="route">GET /console</p>
-        <p>This page, served unconditionally regardless of the <code>Accept</code> header.</p>
-      </article>
-
-      <article>
         <p class="route">GET /api/v1/types</p>
         <p>Every discovered entity type and its record count.</p>
         <pre>curl localhost:8080/api/v1/types</pre>
